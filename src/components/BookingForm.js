@@ -1,15 +1,34 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+
 
 const BookingForm = (props) => {
     const [date, setDate] = useState("");
     const [times, setTimes] = useState("");
     const [guests, setGuests] = useState("");
-    const [occasion, setOccasion] = useState("");
+    const [occasion, setOccasion] = useState("Birthday");
 
-    const handleSubmit = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        props.SubmitForm(e);
+        if (!guests) {
+            alert("Please enter the number of guests")
+            return false
+        }
+
+        if (!date) {
+            alert("Please give a valid date")
+            return false
+        }
+
+        if (!times) {
+            alert("Please give a valid time")
+            return false
+        }
+
+        Swal.fire("Reservation booked!");
+
     }
+
 
     const handleChange = (e) => {
         setDate(e);
@@ -19,7 +38,9 @@ const BookingForm = (props) => {
     return (
         <header>
             <section>
-                <form>
+                <form
+                    noValidate
+                    autoComplete="off">
                     <fieldset>
                         <div>
                             <label htmlFor='book-date'>Choose Date:</label>
@@ -47,10 +68,11 @@ const BookingForm = (props) => {
                             <select id='book-occasion' key={occasion} value={occasion} onChange={(e) => setOccasion(e.target.value)}>
                                 <option>Birthday</option>
                                 <option>Anniversary</option>
+                                <option>Other</option>
                             </select>
                         </div>
                         <div className='btnReceive'>
-                            <input aria-label='On Click' type='submit' value={"Make your Reservations"} />
+                            <button onClick={onSubmit} >Make your Reservations </button>
                         </div>
                     </fieldset>
                 </form>
